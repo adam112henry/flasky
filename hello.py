@@ -1,19 +1,21 @@
-from flask import Flask
+from flask import Flask, render_template, url_for
+from flask_bootstrap import Bootstrap
+from flask_moment import Moment
 from flask import request
 from flask import current_app
+from datetime import datetime
 
 app = Flask(__name__)
+bootstrap = Bootstrap(app)
+moment = Moment(app)
 
 @app.route('/')
 def index():
-    return """<h1>Hello World!</h1>
-    <a href=/user/adam>/user/adam</a><br/>
-    <a href=/agent>/agent</a><br/>
-    <a href=/name>/name</a>"""
+    return render_template('index.html', url=url_for('user', name='fred'), current_time=datetime.utcnow())
 
 @app.route('/user/<name>')
 def user(name):
-    return '<h1>Hello, {}!</h1>'.format(name)
+    return render_template('user.html', name=name)
     
 @app.route('/agent')
 def agent():
@@ -24,3 +26,11 @@ def agent():
 def name():
       name = current_app.name
       return '<p>The name of the app is {}</p>'.format(name)
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
