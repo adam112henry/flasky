@@ -20,6 +20,24 @@
             ],
             "jinja": true,
             "justMyCode": true
+        },
+        {
+            "name": "Python: Flask - local network",
+            "type": "python",
+            "request": "launch",
+            "module": "flask",
+            "env": {
+                "FLASK_APP": "hello.py",
+                "FLASK_DEBUG": "0"
+            },
+            "args": [
+                "run",
+                "--host",
+                "0.0.0.0",
+                "--reload"
+            ],
+            "jinja": true,
+            "justMyCode": true
         }
     ]
 }
