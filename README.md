@@ -16,13 +16,25 @@ $ source venv/bin/activate # activate virtual environment
 
 ```bash
 $ source venv/bin/activate
-(venv)$ export FLASK_APP=hello.py
+(venv)$ export FLASK_APP=flasky.py
 (venv)$ export FLASK_DEBUG=1
 (venv)$ flask shell
->>> from hello import db
+>>> from flasky import db
 >>> db.create_all()
 -- OR --
 (venv)$ flask db upgrade
+```
+
+## Create roles
+
+```bash
+(venv)$ flask shell
+>>> from flasky import db
+>>> from flasky import Role, User
+>>> admin_role = Role(name='Admin')
+>>> db.session.add(admin_role)
+>>> db.session.commit() 
+# do the same for 'Moderator' and 'User' roles
 ```
 
 ## Run the app
@@ -30,4 +42,10 @@ $ source venv/bin/activate
 ```python
 (venv)$ flask run --debugger --reload
 then http://localhost:5000
+```
+
+## Run the tests
+
+```python
+(venv)$ flask test
 ```
