@@ -23,7 +23,7 @@ def index():
             flash('Looks like you have changed your name!')
 
         # Post/Redirect/Get pattern - to eliminate Post as last entry in browser history
-        session['name'] = form.name.data
+        #session['name'] = form.name.data
         form.name.data = ''
         return redirect(url_for('.index'))
 

@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, ValidationError
 from wtforms.validators import DataRequired, Length, EqualTo, Regexp
 from ..models import User
+from flask import session
 
 class LoginForm(FlaskForm):
     user_name = StringField('Username', validators=[DataRequired(), Length(1,64)])
@@ -19,4 +20,15 @@ class RegistrationForm(FlaskForm):
     def validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('Username already in use')
+
+class DeleteUserForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired(), Length(1,64)])
+    submit = SubmitField('Delete user')
+
+    def validate_username(self, field):
+        if field.data == session.get('name'):
+            raise ValidationError('You cannot delete yourself') 
+
+        if User.query.filter_by(username=field.data).first() is None:
+            raise ValidationError('This is not a valid user') 
             

@@ -24,6 +24,10 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
 
     @property
+    def isAdmin(self):
+        return self.role_id == 1
+
+    @property
     def password(self):
         raise AttributeError('password cannot be read')
 
