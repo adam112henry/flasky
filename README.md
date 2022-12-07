@@ -22,12 +22,19 @@ $ source venv/bin/activate
 >>> from flasky import db
 >>> db.create_all()
 -- OR --
-(venv)$ flask db upgrade
+(venv)$ echo $FLASK_CONFIG # check which environment is active - there are separate dbs to upgrade for "development" and "production"
+(venv)$ flask db upgrade  # apply after creating a new script
 ```
+
+## Create migration script
+```bash
+(venv)$ flask db migrate -m "database updates"
+```
+
 
 ## Create roles
 
-```bash
+```python
 (venv)$ flask shell
 >>> from flasky import db
 >>> from flasky import Role, User
@@ -35,6 +42,12 @@ $ source venv/bin/activate
 >>> db.session.add(admin_role)
 >>> db.session.commit() 
 # do the same for 'Moderator' and 'User' roles
+
+-- OR --
+# use the static functions
+(venv)$ flask shell
+>>> Role.insert_roles()
+>>> # create function for users
 ```
 
 ## Run the app
