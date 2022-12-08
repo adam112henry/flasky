@@ -4,6 +4,7 @@ from . import auth
 from .. import db
 from ..models import User
 from .forms import LoginForm, RegistrationForm, DeleteUserForm
+from ..decorators import admin_required
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -43,11 +44,12 @@ def register():
 
 @auth.route('/delete', methods=['GET', 'POST'])
 @login_required
+@admin_required
 def delete():
-    current_user = User.query.filter_by(username=session.get('name')).first()
-    if not current_user.isAdmin:
-        flash('You cannot perform this function unless you are an admin')
-        return redirect(url_for('main.index'))
+    # current_user = User.query.filter_by(username=session.get('name')).first()
+    # if not current_user.is_admin():
+    #     flash('You cannot perform this function unless you are an admin')
+    #     return redirect(url_for('main.index'))
 
     form = DeleteUserForm()
     if form.validate_on_submit():

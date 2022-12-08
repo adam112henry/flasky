@@ -1,8 +1,8 @@
 # hello Flasky
 
-[Flasky book source code](https://github.com/miguelgrinberg/flasky)
+The Flasky app was created from the book [Flask Web Development](https://www.amazon.com/Flask-Web-Development-Developing-Applications/dp/1491991739).  The book's source code on Github is located here: [Flasky book source code](https://github.com/miguelgrinberg/flasky)
 
-[SQLite Web Viewer](https://sqliteviewer.app/?ref=vscode)
+My version of the app is incomplete as I ran out of time after ch 9 and needed to move on to something else. Nonetheless, includes some good examples of basic Python/Flask idioms and usage.
 
 ## Get Started
 
@@ -12,7 +12,7 @@ $ source venv/bin/activate # activate virtual environment
 (venv)$ pip install -r requirements.txt
 ```
 
-## Database Setup
+## Database Setup (SQLite)
 
 ```bash
 $ source venv/bin/activate
@@ -27,10 +27,11 @@ $ source venv/bin/activate
 ```
 
 ## Create migration script
+
 ```bash
 (venv)$ flask db migrate -m "database updates"
+# then upgrade database(s)
 ```
-
 
 ## Create roles
 

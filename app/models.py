@@ -1,11 +1,7 @@
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
+from flask_login import UserMixin, AnonymousUserMixin
 from . import login_manager
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
 
 class Permission:
     FOLLOW = 1
@@ -70,9 +66,11 @@ class User(UserMixin, db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     password_hash = db.Column(db.String(128))
 
-    @property
-    def isAdmin(self):
-        return self.role_id == 1
+    def can(self, perm):
+        return self.role is not None and self.role.has_permission(perm)
+
+    def is_admin(self):
+        return self.can(Permission.ADMIN)
 
     @property
     def password(self):
@@ -87,3 +85,17 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.username
+
+class AnonymousUser(AnonymousUserMixin):
+    def can(self, permissions):
+        return False
+
+    def is_admin(self):
+        return False
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+login_manager.anonymous_user = AnonymousUser

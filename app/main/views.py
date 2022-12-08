@@ -27,7 +27,8 @@ def index():
         form.name.data = ''
         return redirect(url_for('.index'))
 
-    return render_template('index.html', url=url_for('.user', name='fred'), current_time=datetime.utcnow(), form=form, name=session.get('name'), known=session.get('known', False))
+    return render_template('index.html', url=url_for('.user', name='fred'), current_time=datetime.utcnow(), 
+        form=form, name=session.get('name'), known=session.get('known', False))
 
 @main.route('/user/<name>')
 def user(name):

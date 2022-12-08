@@ -1,6 +1,6 @@
 import unittest
 from app import create_app, db
-from app.models import User
+from app.models import User, AnonymousUser, Role, Permission
 
 class UserModelTestCase(unittest.TestCase):
     def setUp(self):
@@ -8,6 +8,7 @@ class UserModelTestCase(unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
+        Role.insert_roles()
 
     def tearDown(self):
         db.session.remove()
@@ -32,3 +33,20 @@ class UserModelTestCase(unittest.TestCase):
         u = User(password = 'cat')
         u2 = User(password = 'cat')
         self.assertTrue(u.password_hash != u2.password_hash)
+
+    def test_user_role(self):
+        r = Role.query.filter_by(name="User").first()
+        u = User(username='bob', password='123', role=r)
+        self.assertTrue(u.can(Permission.FOLLOW))
+        self.assertTrue(u.can(Permission.COMMENT))
+        self.assertTrue(u.can(Permission.WRITE))
+        self.assertFalse(u.can(Permission.MODERATE))
+        self.assertFalse(u.can(Permission.ADMIN))
+
+    def test_anonymous_user(self):
+        u = AnonymousUser()
+        self.assertFalse(u.can(Permission.FOLLOW))
+        self.assertFalse(u.can(Permission.COMMENT))
+        self.assertFalse(u.can(Permission.WRITE))
+        self.assertFalse(u.can(Permission.MODERATE))
+        self.assertFalse(u.can(Permission.ADMIN))
