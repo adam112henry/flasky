@@ -63,3 +63,28 @@ then http://localhost:5000
 ```python
 (venv)$ flask test
 ```
+
+## Docker usage
+
+```bash
+# this will kill everything in docker
+$ docker system prune -a --volumes
+# ensure shell script is executable
+$ chmod +x boot.sh
+# build the container
+$ docker build -t flasky:latest .
+# create and run the container - i.e. first time
+$ docker run --name flasky -d -p 8000:5000 flasky:latest
+# gunicorn running on port 5000 and mapped to localhost:8000
+# -OR- start the existing container
+$ docker start flasky
+# get the container ID
+$ docker container ls  # OR
+$ docker ps
+# open a shell session on the container
+$ docker exec -it [container id] sh
+# exit the shell
+$ exit
+# stop the container
+$ docker stop flasky
+```
